@@ -6,19 +6,26 @@ import static org.hamcrest.Matchers.*;
 
 public class Tests {
 
-    @Test
-    public void firstTest() {
+    @DataProvider(name = "getData")
+    public static Object[][] getData() {
+        return new Object[][] {{116, "Tester-01", "Krakow"}};
+    }
+
+    @Test(dataProvider = "getData")
+    public void firstTest(int id, String name, String city) {
 
         given().
                 header("Content-Type","application/json").
                 header("X-Ninja-Token","0xnofxo6fy2p05pxkz2aicmdooubuqdr").
         when().
-                get("http://79.137.68.21/api/v1/clients/116").
+                get("http://79.137.68.21/api/v1/clients/"+id).
         then().
                 assertThat().
                 statusCode(200).
         and().
-                body("data.name",equalTo("Tester-01"));
+                body("data.name",equalTo(name)).
+        and().
+                body("data.city",equalTo(city));
     }
 
 
